@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Keeps this page OUT of Google so it stays private/hidden. Don't remove this line! -->
+  <meta name="robots" content="noindex, nofollow" />
+
+  <title>Birthday Bash!</title>
+
+  <style>
+    /* ===== COLORS & BACKGROUND =====
+       Want different party colors? Change these. */
+    :root {
+      --color-1: #7C3AED;  /* purple */
+      --color-2: #EC4899;  /* pink */
+      --color-3: #F59E0B;  /* orange */
+      --text:    #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Comic Sans MS", "Trebuchet MS", system-ui, sans-serif;
+      min-height: 100vh;
+      color: var(--text);
+      text-align: center;
+      overflow-x: hidden;
+      /* moving rainbow party background */
+      background: linear-gradient(-45deg, var(--color-1), var(--color-2), var(--color-3), var(--color-1));
+      background-size: 400% 400%;
+      animation: party-bg 12s ease infinite;
+      padding: 30px 16px 60px;
+    }
+    @keyframes party-bg {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ===== THE BIG TITLE ===== */
+    h1 {
+      font-size: clamp(2rem, 8vw, 4.5rem);
+      margin-top: 20px;
+      text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+    }
+    .subtitle {
+      font-size: clamp(1.1rem, 4vw, 1.8rem);
+      margin: 14px 0 30px;
+      opacity: 0.95;
+    }
+
+    /* ===== INFO CARDS (When / Where / Bring) ===== */
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      justify-content: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .card {
+      background: rgba(255,255,255,0.18);
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 20px;
+      padding: 24px;
+      width: 250px;
+      backdrop-filter: blur(4px);
+    }
+    .card .emoji { font-size: 3rem; }
+    .card h2 { font-size: 1.4rem; margin: 10px 0 8px; }
+    .card p { font-size: 1.05rem; line-height: 1.4; }
+
+    /* ===== FLOATING BALLOONS ===== */
+    .balloon {
+      position: fixed;
+      bottom: -100px;
+      font-size: 2.5rem;
+      animation: float-up 9s linear infinite;
+      z-index: -1;
+    }
+    @keyframes float-up {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-115vh) rotate(20deg); opacity: 0.9; }
+    }
+
+    footer { margin-top: 50px; font-size: 1rem; opacity: 0.9; }
+  </style>
+</head>
+
+<body>
+
+  <!-- floating balloons (just for fun) -->
+  <span class="balloon" style="left:10%; animation-delay:0s;">🎈</span>
+  <span class="balloon" style="left:30%; animation-delay:3s;">🎈</span>
+  <span class="balloon" style="left:55%; animation-delay:1.5s;">🎈</span>
+  <span class="balloon" style="left:75%; animation-delay:5s;">🎈</span>
+  <span class="balloon" style="left:90%; animation-delay:2s;">🎈</span>
+
+  <!-- ===== EDIT YOUR PARTY INFO BELOW ===== -->
+
+  <h1>🎉 My Birthday Bash! 🎉</h1>
+  <p class="subtitle">You're invited to the best party ever!</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="emoji">📅</div>
+      <h2>When</h2>
+      <p>Add the date<br/>and time here</p>
+    </div>
+
+    <div class="card">
+      <div class="emoji">📍</div>
+      <h2>Where</h2>
+      <p>Add the place<br/>or address here</p>
+    </div>
+
+    <div class="card">
+      <div class="emoji">🎁</div>
+      <h2>Bring</h2>
+      <p>What should<br/>people bring?</p>
+    </div>
+  </div>
+
+  <footer>Can't wait to see you there! 🥳</footer>
+
+</body>
+</html>
