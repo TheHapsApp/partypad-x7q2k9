@@ -242,21 +242,25 @@
     let shootCooldown = 0;
 
     // ----- balloons (the targets) -----
+    // three sizes: big (tier 2), medium (tier 1), small (tier 0).
+    // smaller balloons are worth more points because they're harder to hit!
     const COLORS = ['#ff5d8f', '#ffd23f', '#3bceac', '#5d9bff', '#c77dff', '#ff924c'];
+    const TIERS = { 2: { r: 30, pts: 1 }, 1: { r: 22, pts: 2 }, 0: { r: 14, pts: 3 } };
     const balloons = [];
-    function spawnBalloon() {
-      const r = 18 + Math.random() * 14;
+    function makeBalloon(x, y, tier, vx, vy) {
       balloons.push({
-        x: r + Math.random() * (W - 2 * r),
-        y: H + r + Math.random() * 80,
-        r: r,
-        vx: (Math.random() - 0.5) * 20,
-        vy: -(25 + Math.random() * 35),
+        x: x, y: y, tier: tier, r: TIERS[tier].r,
+        vx: vx, vy: vy,
         sway: Math.random() * Math.PI * 2,
         color: COLORS[Math.floor(Math.random() * COLORS.length)]
       });
     }
-    for (let i = 0; i < 7; i++) spawnBalloon();
+    function spawnBigBalloon() {
+      const r = TIERS[2].r;
+      makeBalloon(r + Math.random() * (W - 2 * r), H + r + Math.random() * 80,
+                  2, (Math.random() - 0.5) * 20, -(25 + Math.random() * 30));
+    }
+    for (let i = 0; i < 5; i++) spawnBigBalloon();
 
     // ----- pop burst particles -----
     const particles = [];
@@ -268,7 +272,18 @@
       }
     }
 
+    // ----- score & high score (the best score is saved in the browser) -----
     let score = 0;
+    let high = 0;
+    try { high = parseInt(localStorage.getItem('hapsHighScore') || '0', 10) || 0; } catch (e) {}
+    function updateScore() {
+      if (score > high) {
+        high = score;
+        try { localStorage.setItem('hapsHighScore', String(high)); } catch (e) {}
+      }
+      if (counter) counter.textContent = '🎈 ' + score + '   🏆 Best: ' + high;
+    }
+    updateScore();
 
     // wrap things around the screen edges (classic Asteroids style)
     function wrap(o) {
@@ -331,8 +346,9 @@
         bl.sway += dt * 2;
         bl.x += (bl.vx + Math.sin(bl.sway) * 12) * dt;
         bl.y += bl.vy * dt;
-        if (bl.y < -bl.r - 10) { balloons.splice(i, 1); spawnBalloon(); }
+        if (bl.y < -bl.r - 10) balloons.splice(i, 1);
       }
+      while (balloons.length < 5) spawnBigBalloon();   // always keep some balloons floating
 
       // did a bullet hit a balloon?
       for (let i = balloons.length - 1; i >= 0; i--) {
@@ -343,11 +359,15 @@
           if (dx * dx + dy * dy < bl.r * bl.r) {
             burst(bl.x, bl.y, bl.color);
             playPop();
+            score += TIERS[bl.tier].pts;
+            updateScore();
+            // big & medium balloons split into two smaller ones (like asteroids!)
+            if (bl.tier > 0 && balloons.length < 30) {
+              makeBalloon(bl.x, bl.y, bl.tier - 1, bl.vx - 30, bl.vy - 15);
+              makeBalloon(bl.x, bl.y, bl.tier - 1, bl.vx + 30, bl.vy - 15);
+            }
             balloons.splice(i, 1);
             bullets.splice(j, 1);
-            score++;
-            if (counter) counter.textContent = '🎈 Popped: ' + score;
-            spawnBalloon();
             break;
           }
         }
