@@ -128,6 +128,22 @@
     }
     .tc-btn:active { background: rgba(255,255,255,0.45); }
     #tc-fire { width: 84px; height: 84px; font-size: 1.1rem; font-weight: bold; }
+
+    /* the party food menu */
+    .menu {
+      max-width: 640px;
+      margin: 36px auto 0;
+      background: rgba(255,255,255,0.16);
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 20px;
+      padding: 24px 22px;
+      backdrop-filter: blur(4px);
+      text-align: left;
+    }
+    .menu h2 { text-align: center; font-size: 1.8rem; margin-bottom: 16px; }
+    .menu .item { margin: 12px 0; }
+    .menu .label { font-weight: bold; display: block; font-size: 1.2rem; }
+    .menu .food { font-size: 1.02rem; opacity: 0.95; }
   </style>
 </head>
 
@@ -162,6 +178,15 @@
         <h2>Bring</h2>
         <p>Presents! 🎁</p>
       </div>
+    </div>
+
+    <div class="menu">
+      <h2>🎉 Party Menu 🎉</h2>
+      <div class="item"><span class="label">🌭 Main</span><span class="food">Hot Dogs (beef franks!)</span></div>
+      <div class="item"><span class="label">🥔 Sides</span><span class="food">Potato Chips · Potato Salad · Mac &amp; Cheese</span></div>
+      <div class="item"><span class="label">🍉 Refreshing</span><span class="food">Watermelon</span></div>
+      <div class="item"><span class="label">🥤 Drink</span><span class="food">Lemonade</span></div>
+      <div class="item"><span class="label">🍫 Desserts</span><span class="food">Chocolate Cupcakes · Raspberry-Filled Chocolate Cupcakes · Rice Krispie Treats · Scotcharoos · M&amp;M Cookies · Bomb Pops</span></div>
     </div>
 
     <p id="hint">🚀 Fly with the <b>arrow keys</b> or the buttons below · <b>Space</b> or <b>FIRE</b> to shoot the balloons!</p>
