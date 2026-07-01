@@ -244,19 +244,22 @@
     // ----- balloons (the targets) -----
     // three sizes: big (tier 2), medium (tier 1), small (tier 0).
     // smaller balloons are worth more points because they're harder to hit!
-    const COLORS = ['#ff5d8f', '#ffd23f', '#3bceac', '#5d9bff', '#c77dff', '#ff924c'];
+    const COLORS = ['#ff7a1a', '#1a1a1a', '#9d4edd'];   // Oliver's party colors: orange, black, purple!
     const TIERS = { 2: { r: 30, pts: 1 }, 1: { r: 22, pts: 2 }, 0: { r: 14, pts: 3 } };
     const FACES = ['beard', 'mustache', 'full', 'eyebrows'];   // silly hairy faces!
     const HAIRS = ['#3a2a1a', '#241c14', '#5a3a22', '#111111'];
     const balloons = [];
     function makeBalloon(x, y, tier, vx, vy) {
+      const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      // black balloons get light hair so the funny faces still show up!
+      const hair = (color === '#1a1a1a') ? '#e6e6e6' : HAIRS[Math.floor(Math.random() * HAIRS.length)];
       balloons.push({
         x: x, y: y, tier: tier, r: TIERS[tier].r,
         vx: vx, vy: vy,
         sway: Math.random() * Math.PI * 2,
-        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        color: color,
         face: FACES[Math.floor(Math.random() * FACES.length)],
-        hair: HAIRS[Math.floor(Math.random() * HAIRS.length)]
+        hair: hair
       });
     }
     function spawnBigBalloon() {
