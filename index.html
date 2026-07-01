@@ -100,6 +100,34 @@
       font-size: 1rem;
       z-index: 10;
     }
+
+    /* on-screen buttons so the game works on phones & tablets too */
+    #touch-controls {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 16px;
+      z-index: 9;
+      pointer-events: none;      /* only the buttons themselves are tappable */
+    }
+    #touch-controls .group { display: flex; gap: 12px; }
+    .tc-btn {
+      pointer-events: auto;
+      width: 68px; height: 68px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.22);
+      color: #fff;
+      font-size: 1.8rem;
+      display: flex; align-items: center; justify-content: center;
+      user-select: none; -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: none;
+    }
+    .tc-btn:active { background: rgba(255,255,255,0.45); }
+    #tc-fire { width: 84px; height: 84px; font-size: 1.1rem; font-weight: bold; }
   </style>
 </head>
 
@@ -136,9 +164,21 @@
       </div>
     </div>
 
-    <p id="hint">🚀 On a computer: <b>Arrow keys</b> to fly your ship · <b>Space</b> to shoot the balloons!</p>
+    <p id="hint">🚀 Fly with the <b>arrow keys</b> or the buttons below · <b>Space</b> or <b>FIRE</b> to shoot the balloons!</p>
 
     <footer>Can't wait to see you there! 🥳</footer>
+  </div>
+
+  <!-- tap buttons for phones/tablets (they also work with a mouse) -->
+  <div id="touch-controls">
+    <div class="group">
+      <div class="tc-btn" id="tc-left">◀</div>
+      <div class="tc-btn" id="tc-thrust">🔥</div>
+      <div class="tc-btn" id="tc-right">▶</div>
+    </div>
+    <div class="group">
+      <div class="tc-btn" id="tc-fire">FIRE</div>
+    </div>
   </div>
 
   <!-- ===== THE SPACESHIP GAME ===== -->
@@ -394,6 +434,29 @@
 
       ctx.restore();
     }
+
+    // ----- on-screen buttons (work with touch AND mouse) -----
+    function bindButton(id, key) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      function press(e) {
+        e.preventDefault();
+        keys[key] = true;
+        if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} }
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+      }
+      function release(e) { if (e) e.preventDefault(); keys[key] = false; }
+      el.addEventListener('touchstart', press, { passive: false });
+      el.addEventListener('touchend', release);
+      el.addEventListener('touchcancel', release);
+      el.addEventListener('mousedown', press);
+      el.addEventListener('mouseup', release);
+      el.addEventListener('mouseleave', release);
+    }
+    bindButton('tc-left',   'ArrowLeft');
+    bindButton('tc-right',  'ArrowRight');
+    bindButton('tc-thrust', 'ArrowUp');
+    bindButton('tc-fire',   ' ');
 
     requestAnimationFrame(loop);
   })();
